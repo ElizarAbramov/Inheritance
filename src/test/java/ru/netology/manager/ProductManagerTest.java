@@ -22,16 +22,16 @@ class ProductManagerTest {
 
         Product[] actual = productManager.searchBy("John");
         Product[] expected = new Product[]{story};
-
         assertArrayEquals(actual, expected);
     }
 
     @Test
-    public void shoulAddAnddSearchBookByName() {
+    public void shouldAddAndSearchBookByName() {
         productManager.add(story);
 
-        Boolean actual = productManager.matches(story, "Story");
-        Boolean expected = true;
+        Product[] actual = productManager.searchBy("Story");
+        Product[] expected = new Product[]{story};
+        assertArrayEquals(actual, expected);
     }
 
     @Test
@@ -42,6 +42,7 @@ class ProductManagerTest {
 
         Product[] actual = repository.findAll();
         Product[] expected = new Product[]{iponel};
+        assertArrayEquals(actual, expected);
     }
 
     @Test
