@@ -4,9 +4,11 @@ import org.junit.jupiter.api.Test;
 import ru.netology.domain.Book;
 import ru.netology.domain.Product;
 import ru.netology.domain.Smartphone;
+import ru.netology.repository.NotFoundException;
 import ru.netology.repository.Repository;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ProductManagerTest {
     private Repository repository = new Repository();
@@ -31,17 +33,6 @@ class ProductManagerTest {
 
         Product[] actual = productManager.searchBy("Story");
         Product[] expected = new Product[]{story};
-        assertArrayEquals(actual, expected);
-    }
-
-    @Test
-    public void shouldDeleteSmartphone() {
-        productManager.add(samsong);
-        productManager.add(iponel);
-        productManager.delete(3);
-
-        Product[] actual = repository.findAll();
-        Product[] expected = new Product[]{iponel};
         assertArrayEquals(actual, expected);
     }
 
@@ -93,5 +84,26 @@ class ProductManagerTest {
         Product[] actual = productManager.searchBy(" ");
         Product[] expected = new Product[]{};
         assertArrayEquals(actual, expected);
+    }
+
+    @Test
+    public void shouldDeleteSmartphone() {
+        productManager.add(samsong);
+        productManager.add(iponel);
+        productManager.delete(3);
+
+        Product[] actual = repository.findAll();
+        Product[] expected = new Product[]{iponel};
+        assertArrayEquals(actual, expected);
+    }
+
+    @Test
+    public void shouldGenerateNotFoundException() {
+        productManager.add(legend);
+        productManager.add(samsong);
+
+        assertThrows(NotFoundException.class, () -> {
+            repository.removeById(234);
+        });
     }
 }
